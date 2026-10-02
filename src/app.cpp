@@ -211,7 +211,12 @@ PYBIND11_MODULE(py_dismech, m) {
         .def("getM2", &ElasticRod::getM2)
         .def("freeVertexBoundaryCondition", &ElasticRod::freeVertexBoundaryCondition)
         .def("setVertexBoundaryCondition", &ElasticRod::setVertexBoundaryCondition)
-        .def("setThetaBoundaryCondition", &ElasticRod::setThetaBoundaryCondition);
+        .def("setThetaBoundaryCondition", &ElasticRod::setThetaBoundaryCondition)
+        .def_readwrite("ref_len", &ElasticRod::ref_len)
+        .def_readwrite("voronoi_len", &ElasticRod::voronoi_len)
+        .def_readwrite("kappa_bar", &ElasticRod::kappa_bar)
+        .def_readwrite("twist_bar", &ElasticRod::twist_bar)
+        .def_readwrite("mass_array", &ElasticRod::mass_array);
 
     // =============================== Enum Definitions =========================================
     py::enum_<IntegratorMethod>(m, "IntegratorMethod")
