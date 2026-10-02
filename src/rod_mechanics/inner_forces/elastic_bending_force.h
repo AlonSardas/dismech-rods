@@ -12,6 +12,9 @@ class ElasticBendingForce : public BaseForce
     ~ElasticBendingForce() override;
     void computeForce(double dt) override;
     void computeForceAndJacobian(double dt) override;
+    std::string getName() const override {
+        return "bending";
+    }
 
   private:
     void jacobianComputation();

@@ -25,6 +25,12 @@ double ImplicitMidpoint::stepForwardInTime() {
     // Compute position at T=t+0.5dt
     dt = 2 * newtonMethod(0.5 * dt);
 
+    // Record selected forces at the converged midpoint state (needs x0 of this step)
+    if (recordingForces()) {
+        prepSystemForIteration();
+        recordForces(0.5 * dt);
+    }
+
     for (const auto& limb : limbs) {
         // Compute velocity at T=t+0.5dt
         limb->u = (limb->x - limb->x0) / (0.5 * dt);

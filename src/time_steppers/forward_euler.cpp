@@ -22,6 +22,8 @@ double ForwardEuler::stepForwardInTime() {
     // Compute forces using current x and u
     prepSystemForIteration();
     forces->computeForces(dt);
+    if (recordingForces())
+        recordForces(dt);
 
     // Could perhaps explore a vectorized solution for this later but too
     // complicated for now.

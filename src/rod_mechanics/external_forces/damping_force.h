@@ -13,6 +13,9 @@ class DampingForce : public BaseForce
 
     void computeForce(double dt) override;
     void computeForceAndJacobian(double dt) override;
+    std::string getName() const override {
+        return "damping";
+    }
 
   private:
     double viscosity;

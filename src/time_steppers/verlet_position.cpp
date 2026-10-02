@@ -30,6 +30,8 @@ double VerletPosition::stepForwardInTime() {
     // Make sure to leave out inertial force
     prepSystemForIteration();
     forces->computeForces(0.5 * dt);
+    if (recordingForces())
+        recordForces(0.5 * dt);
 
     // Could perhaps explore a vectorized solution for this later but too
     // complicated for now.

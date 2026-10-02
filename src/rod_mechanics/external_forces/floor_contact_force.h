@@ -15,6 +15,9 @@ class FloorContactForce : public BaseForce
 
     void computeForce(double dt) override;
     void computeForceAndJacobian(double dt) override;
+    std::string getName() const override {
+        return "floor_contact";
+    }
 
     double min_dist;
     double floor_z;

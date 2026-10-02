@@ -13,6 +13,9 @@ class GravityForce : public BaseForce
 
     void computeForce(double dt) override;
     void computeForceAndJacobian(double dt) override;
+    std::string getName() const override {
+        return "gravity";
+    }
 
   private:
     void setGravity();

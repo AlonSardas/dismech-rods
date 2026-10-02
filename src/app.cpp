@@ -42,6 +42,7 @@ class SimulationManager
     std::shared_ptr<World> my_world;
     SimParams sim_params;
     RenderParams render_params;
+    std::vector<std::string> recorded_forces;
     std::shared_ptr<BaseLogger> logger;
     std::unique_ptr<BaseSimEnv> env;
 
@@ -56,6 +57,7 @@ class SimulationManager
     void initialize(int argc, char* argv[]) {
         soft_robots->setup();
         my_world = std::make_shared<World>(soft_robots, forces, sim_params);
+        my_world->setRecordedForces(recorded_forces);
 
         switch (render_params.renderer) {
             case HEADLESS:
@@ -73,6 +75,18 @@ class SimulationManager
             default:
                 throw std::runtime_error("Unknown renderer type provided.");
         }
+    }
+
+    void recordForces(const std::vector<std::string>& names) {
+        recorded_forces = names;
+        if (my_world)
+            my_world->setRecordedForces(names);
+    }
+
+    std::map<std::string, MatX> getRecordedForces(int limb_idx) const {
+        if (!my_world)
+            throw std::runtime_error("Simulation has not been initialized.");
+        return my_world->getRecordedForces(limb_idx);
     }
 
     bool simulationCompleted() {
@@ -166,6 +180,12 @@ PYBIND11_MODULE(py_dismech, m) {
         .def("step_simulation",
              py::overload_cast<const py::dict&>(&SimulationManager::stepSimulation))
         .def("run_simulation", &SimulationManager::runSimulation)
+        .def("record_forces", &SimulationManager::recordForces, py::arg("names"),
+             "Select forces (by name, e.g. 'gravity', 'bending', 'inertia') to record after "
+             "each step.")
+        .def("get_recorded_forces", &SimulationManager::getRecordedForces, py::arg("limb_idx"),
+             "Recorded nodal forces of the last step, {name: (nv, 3) array}, physical sign, "
+             "including constrained nodes.")
         .def_readonly("soft_robots", &SimulationManager::soft_robots,
                       py::return_value_policy::reference_internal)
         .def_readonly("forces", &SimulationManager::forces,

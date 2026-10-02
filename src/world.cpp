@@ -142,6 +142,14 @@ bool World::floorExists() {
     return forces->ff != nullptr;
 }
 
+void World::setRecordedForces(const std::vector<std::string>& names) {
+    stepper->setRecordedForces(names);
+}
+
+std::map<std::string, MatX> World::getRecordedForces(int limb_idx) const {
+    return stepper->getRecordedForces(limb_idx);
+}
+
 double World::getFloorZ() {
     if (forces->ff)
         return forces->ff->floor_z;

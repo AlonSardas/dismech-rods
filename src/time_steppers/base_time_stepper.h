@@ -2,6 +2,9 @@
 #define BASE_TIME_STEPPER_H
 
 #include "global_definitions.h"
+#include <map>
+#include <set>
+#include <string>
 
 class SoftRobots;
 class ElasticRod;
@@ -17,6 +20,12 @@ class BaseTimeStepper : public std::enable_shared_from_this<BaseTimeStepper>
     virtual ~BaseTimeStepper();
 
     void addForce(int ind, double p, int limb_idx);
+
+    // Force recording. After a step's solve, the selected forces are recomputed one at a
+    // time with addForce redirected into per-force buffers (physical sign, all DOFs
+    // including constrained ones). The solver's residual is not touched.
+    void setRecordedForces(const std::vector<std::string>& names);
+    std::map<std::string, MatX> getRecordedForces(int limb_idx) const;
 
     virtual void initStepper();
     virtual void prepSystemForIteration();
@@ -45,6 +54,14 @@ class BaseTimeStepper : public std::enable_shared_from_this<BaseTimeStepper>
     std::vector<std::shared_ptr<ElasticJoint>>& joints;
     std::vector<std::shared_ptr<BaseController>>& controllers;
     std::shared_ptr<ForceContainer> forces;
+
+    bool recordingForces() const;
+    void recordForces(double dt);
+
+  private:
+    std::set<std::string> recorded_names;
+    std::map<std::string, std::vector<VecX>> recorded;  // name -> per-limb, size ndof
+    std::vector<VecX>* sink = nullptr;
 };
 
 #endif  // BASE_TIME_STEPPER_H

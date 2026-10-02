@@ -2,6 +2,7 @@
 #define BASE_FORCE_H
 
 #include "global_definitions.h"
+#include <string>
 
 class SoftRobots;
 class BaseTimeStepper;
@@ -14,6 +15,9 @@ class BaseForce
 
     virtual void computeForce(double dt) = 0;
     virtual void computeForceAndJacobian(double dt) = 0;
+
+    // Name used to select this force for recording (see BaseTimeStepper::recordForces).
+    virtual std::string getName() const = 0;
 
     void setTimeStepper(std::weak_ptr<BaseTimeStepper> stepper);
 

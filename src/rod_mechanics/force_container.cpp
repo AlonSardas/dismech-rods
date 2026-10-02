@@ -31,6 +31,10 @@ void ForceContainer::computeForcesAndJacobian(double dt) {
         force->computeForceAndJacobian(dt);
 }
 
+const std::vector<std::shared_ptr<BaseForce>>& ForceContainer::getForces() const {
+    return forces;
+}
+
 void ForceContainer::addForce(const std::shared_ptr<BaseForce>& force) {
     if (cf == nullptr) {
         cf = std::dynamic_pointer_cast<ContactForce>(force);

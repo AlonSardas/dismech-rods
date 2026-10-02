@@ -12,6 +12,9 @@ class ElasticStretchingForce : public BaseForce
     ~ElasticStretchingForce() override;
     void computeForce(double dt) override;
     void computeForceAndJacobian(double dt) override;
+    std::string getName() const override {
+        return "stretching";
+    }
 
   private:
     double len, refLength;

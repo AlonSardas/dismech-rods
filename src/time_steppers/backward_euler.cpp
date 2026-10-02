@@ -266,6 +266,12 @@ double BackwardEuler::stepForwardInTime() {
 
     dt = newtonMethod(dt);
 
+    // Record selected forces at the converged state (needs x0 of this step)
+    if (recordingForces()) {
+        prepSystemForIteration();
+        recordForces(dt);
+    }
+
     // Update limbs
     for (const auto& limb : limbs) {
         // Update velocity

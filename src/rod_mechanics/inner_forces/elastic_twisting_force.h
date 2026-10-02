@@ -12,6 +12,9 @@ class ElasticTwistingForce : public BaseForce
     ~ElasticTwistingForce() override;
     void computeForce(double dt) override;
     void computeForceAndJacobian(double dt) override;
+    std::string getName() const override {
+        return "twisting";
+    }
 
   private:
     int ci, ind, ind1, ind2;

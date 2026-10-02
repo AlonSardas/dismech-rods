@@ -15,6 +15,9 @@ class UniformConstantForce : public BaseForce
 
     void computeForce(double dt) override;
     void computeForceAndJacobian(double dt) override;
+    std::string getName() const override {
+        return "uniform_constant";
+    }
 
   private:
     std::vector<std::pair<int, Vec3>> limb_force_pairs;

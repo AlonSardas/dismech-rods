@@ -2,6 +2,8 @@
 #define WORLD_H
 
 #include "global_definitions.h"
+#include <map>
+#include <string>
 
 class SoftRobots;
 class ForceContainer;
@@ -24,6 +26,8 @@ class World
     void printSimData();
     bool floorExists();
     double getFloorZ();
+    void setRecordedForces(const std::vector<std::string>& names);
+    std::map<std::string, MatX> getRecordedForces(int limb_idx) const;
 
     std::shared_ptr<SoftRobots> soft_robots;
 

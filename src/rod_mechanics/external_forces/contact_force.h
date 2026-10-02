@@ -19,6 +19,9 @@ class ContactForce : public BaseForce
     //    void updateContactStiffness();
     void computeForce(double dt) override;
     void computeForceAndJacobian(double dt) override;
+    std::string getName() const override {
+        return "contact";
+    }
     void broadPhaseCollisionDetection() const;
 
     int getNumCollisions() const;
